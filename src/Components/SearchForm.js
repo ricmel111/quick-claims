@@ -5,12 +5,8 @@ const SearchForm = () => {
         <div className="container p-5">
          <div className="row">
             <div className="col-12 col-lg-10 offset-lg-1 card"  id="claimForm">
-            <div className="row mt-3">
-            <div className="text-center">
-               <h3><strong>Search Claims</strong></h3>
-            </div>
-         </div>
                <div className="card-body">
+               <h3 className="card-title text-center p-3">Search claims</h3>
                   <form className="col-10">
                      <div className="form-group row">
                         <label htmlFor="searchPolicyNumber" className="col-sm-5 col-form-label">Policy Number</label>

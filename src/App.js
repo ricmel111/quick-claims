@@ -1,23 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
+import Navbar from './Components/Navbar';
+import ClaimForm from './Components/ClaimForm';
+import Footer from './Components/Footer';
+import SearchForm from './Components/SearchForm';
+import ClaimsTable from './Components/ClaimsTable';
+import OpenClaimsTable from './Components/OpenClaimsTable';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Navbar />
+      <ClaimForm />
+      <OpenClaimsTable />
+      <SearchForm />
+      <ClaimsTable />
+      <Footer />
     </div>
   );
 }

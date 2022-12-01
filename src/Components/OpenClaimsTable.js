@@ -6,8 +6,9 @@ const OpenClaimsTable = () => {
     const claims = getClaimsData();
 
     return (
+      <div className="container">
         <div className="row mt-5 p-5">
-                <div className="col-12 col-lg-8 offset-lg-2 card"  id="claimForm">
+                <div className="col-12 col-lg-10 offset-lg-1 card"  id="claimForm">
                    <div className="row card-body">
                    <h3 className="card-title text-center p-3">Open claims</h3>
                      <div className="col-12">
@@ -25,6 +26,7 @@ const OpenClaimsTable = () => {
                      </div>
                    </div>
                 </div>
+             </div>
              </div>
     )
 }

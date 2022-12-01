@@ -3,7 +3,6 @@ import Navbar from './Components/Navbar';
 import ClaimForm from './Components/ClaimForm';
 import Footer from './Components/Footer';
 import SearchForm from './Components/SearchForm';
-import ClaimsTable from './Components/ClaimsTable';
 import OpenClaimsTable from './Components/OpenClaimsTable';
 
 function App() {
@@ -13,7 +12,6 @@ function App() {
       <ClaimForm />
       <OpenClaimsTable />
       <SearchForm />
-      <ClaimsTable />
       <Footer />
     </div>
   );

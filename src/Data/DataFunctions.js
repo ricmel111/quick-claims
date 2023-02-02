@@ -1,8 +1,149 @@
-export const getClaimsData = () => {
-    return [
-        {claim_nbr: 20145689712, policy_nbr: 101456897, insurance_type: "Property", full_name: "John Doe", claim_start_date: "2022-01-13", estimated_claim_amount: "200.01", reason_for_claim:"Some reason for the claim 0", description_of_incident: "Some description of the incident 0", status: "Open"},
-        {claim_nbr: 20145689713, policy_nbr: 101456345, insurance_type: "Motor", full_name: "Jill Walker", claim_start_date: "2022-05-31", estimated_claim_amount: "198.12", reason_for_claim:"Some reason for the claim 1", description_of_incident: "Some description of the incident 1", status: "Closed"},
-        {claim_nbr: 20145689714, policy_nbr: 101456520, insurance_type: "Pet", full_name: "Max Rest", claim_start_date: "2022-02-10", estimated_claim_amount: "53.23", reason_for_claim:"Some reason for the claim 2", description_of_incident: "Some description of the incident 2", status: "Open"},
-        {claim_nbr: 20145689715, policy_nbr: 101456245, insurance_type: "Property", full_name: "Vikki Best", claim_start_date: "2022-07-11", estimated_claim_amount: "53.23", reason_for_claim:"Some reason for the claim 3", description_of_incident: "Some description of the incident 3", status: "Pending"},
-    ]
+import axios from "axios";
+
+const headers = new Headers({"Accept" : "application/json"})
+
+const getAuthHeader = (username, password) => {
+    return {"Authorization" : "Basic " + btoa(`${username}:${password}`)}
 }
+
+export const login = (username, password) => {
+  return axios({url : "http://localhost:8080/api/login",
+                  method: "POST",
+                  headers: {...getAuthHeader(username,password),
+                       "Accept" : "application/json", "Content-Type": "application/json"},
+                       data: {username: username}
+                  });
+}
+
+export const addNewCLaim = (claim, username, password) => {
+  console.log("DATA FUNCTIONS - addClaim", claim, username, password);
+  return axios({
+    url: "http://localhost:8080/api/claim",
+    method: "POST",
+    headers: { Accept: "application/json", ...getAuthHeader("vik", "123") },
+    data: claim,
+  });
+};
+
+export const updateClaim = (claim, username, password) => {
+  console.log("DATA FUNCTIONS - updateClaim", claim);
+  return axios({
+    url: "http://localhost:8080/api/claim/" + claim.id,
+    method: "PUT",
+    headers: {
+      Accept: "application/json", ...getAuthHeader("vik", "123")
+    },
+    data: claim
+  });
+};
+
+export const addNewTask = (task, username, password) => {
+  console.log("DATA FUNCTIONS - addNewTask", task);
+  return axios({
+    url: "http://localhost:8080/api/claim/"+task.claimId+"/task",
+    method: "POST",
+    headers: {
+      Accept: "application/json", ...getAuthHeader("vik", "123")
+    },
+    data: task,
+  });
+};
+
+export const updateTaskStatus = (task, username, password) => {
+  console.log("DATA FUNCTIONS - updateTaskStatus", task);
+  return axios({
+    url: "http://localhost:8080/api/task/" + task.id,
+    method: "PUT",
+    headers: {
+      Accept: "application/json", ...getAuthHeader("vik", "123")
+    },
+    data: task
+  });
+};
+
+export const addNewNote = (note, username, password) => {
+  console.log("DATA FUNCTIONS - addNewNote", note);
+  return axios({
+    url: "http://localhost:8080/api/claim/"+note.claimId+"/note",
+    method: "POST",
+    headers: { Accept: "application/json", ...getAuthHeader(username, password) },
+    data: note,
+  });
+};
+
+export const getAllOpenClaimsAxios = (username, password) => {
+  console.log("DATA FUNCTIONS - getAllOpenClaims");
+  return axios({
+    url: "http://localhost:8080/api/claim/?claim-status=O,P,A",
+    method: "GET",
+    headers: {
+      Accept: "application/json", ...getAuthHeader(username, password)
+    }
+  });
+};
+
+export const getAllClaimsByLastName = (lastName, username, password) => {
+  console.log("DATA FUNCTIONS - getAllClaimsByLastName ", lastName);
+  return axios({
+    url: "http://localhost:8080/api/claim/?lastname=" + lastName,
+    method: "GET",
+    headers: {
+      Accept: "application/json", ...getAuthHeader(username, password)
+    }
+  });
+};
+
+export const getAllClaimsByPolicyNumber = (policyNbr, username, password) => {
+  console.log("DATA FUNCTIONS - getAllClaimsByPolicyNumber ", policyNbr);
+  return axios({
+    url: "http://localhost:8080/api/claim/?policynumber=" + policyNbr,
+    method: "GET",
+    headers: {
+      Accept: "application/json", ...getAuthHeader(username, password)
+    }
+  });
+};
+
+export const getAllClaimsByClaimNumber = (claimNumber, username, password) => {
+  console.log("DATA FUNCTIONS - getAllClaimsByClaimNumber ", claimNumber);
+  return axios({
+    url: "http://localhost:8080/api/claim/?claimnumber=" + claimNumber,
+    method: "GET",
+    headers: {
+      Accept: "application/json", ...getAuthHeader(username, password)
+    }
+  });
+};
+
+export const getClaimById = (id, username, password) => {
+  console.log("DATA FUNCTIONS - getClaimById ", id);
+  return axios({
+    url: "http://localhost:8080/api/claim/" + id,
+    method: "GET",
+    headers: {
+      Accept: "application/json", ...getAuthHeader("vik", "123")
+    }
+  });
+};
+
+export const getTasksByClaimId = (id, username, password) => {
+  console.log("DATA FUNCTIONS - getTasksByClaimId ", id);
+  return axios({
+    url: "http://localhost:8080/api/task?claimId=" + id,
+    method: "GET",
+    headers: {
+      Accept: "application/json", ...getAuthHeader("vik", "123")
+    }
+  });
+};
+
+export const getNotesByClaimId = (id, username, password) => {
+  console.log("DATA FUNCTIONS - getNotesByClaimId ", id);
+  return axios({
+    url: "http://localhost:8080/api/note?claimId=" + id,
+    method: "GET",
+    headers: {
+      Accept: "application/json", ...getAuthHeader("vik", "123")
+    }
+  });
+};

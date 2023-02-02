@@ -11,6 +11,15 @@ body {
   font-family: 'Roboto', sans-serif !important;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+.content-container {
+  min-height: calc(100vh - 136px);
+  padding-top: 50px;
+}
+
 /* Nav */
 .navbar {
   background-color: rgb(0,0,0,0.2);
@@ -21,11 +30,13 @@ body {
   font-size: 1.6rem !important;
   font-family: 'Bungee Inline', cursive !important;
   text-transform: uppercase;
+  width: 330px;
 }
 
 .nav-item {
   text-transform: uppercase;
   padding: 0px 10px;
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 /*Claim Page*/
@@ -48,12 +59,11 @@ body {
 }
 
 #claimForm .form-group {
-  margin: 10px 0px;
+  margin: 20px 0px;
 }
 
 #claimForm label {
   text-align: right;
-  font-weight: 700;
 }
 
 span#dollar {
@@ -70,17 +80,8 @@ span#dollar::before {
   transform: translateY(-50%);
 }
 
-input#claimEstimatedAmount {
+input#estimatedAmount {
   padding-left: 18px;
-}
-
-.btn-primary {
-  background-color: rgba(77, 54, 132) !important;
-  border-color: rgb(77, 54, 132) !important;
-}
-
-.btn-primary:hover {
-  background-color: rgba(110, 58, 143) !important;
 }
 
 #fullClaimDisplay td {
@@ -106,4 +107,67 @@ input#claimEstimatedAmount {
 footer {
   background-color: rgb(0,0,0,0.2);
   min-height: 100px;
+}
+
+.footer--pin {
+  position: relative;
+  left: 0;
+  bottom: 0;
+}
+
+/* Buttons */
+.btn {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 0.8em;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  background-color: rgba(77, 54, 132) !important;
+  border-color: rgb(77, 54, 132) !important;
+}
+
+.btn-primary:hover {
+  background-color: rgba(110, 58, 143) !important;
+}
+
+.btn-secondary {
+  background-color: rgb(253, 87, 171) !important;
+  border-color: rgb(253, 87, 171) !important;
+  color: rgba(255, 255, 255) !important;
+}
+
+.btn-secondary:hover {
+  background-color: rgb(196, 26, 111) !important;
+  border-color: rgb(196, 26, 111) !important;
+}
+
+.align-items-center {
+  display: flex;
+  align-items: center;
+}
+
+label {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 700;
+}
+
+.formError {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.login {
+  position: absolute;
+    right: 50px;
+    margin-top: 15px;
+    color: white;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.btn-login {
+  margin-top: 5px;
+  display: block;
+  color: white;
 }

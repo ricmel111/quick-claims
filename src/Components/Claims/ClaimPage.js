@@ -1,70 +1,127 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getClaimById } from "../../Data/DataFunctions";
+import { getClaimById, getNotesByClaimId } from "../../Data/DataFunctions";
 import NoteList from "../Notes/NoteList";
-import NewTaskForm from "../Tasks/NewTaskForm";
-import TaskList from "../Tasks/TaskList";
 import ClaimForm from "./ClaimForm";
 import { UserContext } from "../../Contexts/UserContexts";
+import Task from "../Tasks/Task";
 
 const ClaimPage = () => {
   const params = useParams();
-  const [archived, setArchived] = useState(false);
+  const [archived, setArchived] = useState();
   const [claim, setClaim] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const currentUser = useContext(UserContext);
+  const [awaitingAssessment, setAwaitingAssessment] = useState(false);
+  const [note, setNote] = useState([]);
 
   useEffect(() => {
     if (params.claim) {
+      loadClaim();
+      loadNotes();
+    }
+  }, [params.claim]);
+
+  const loadClaim = () => {
     getClaimById(params.claim, currentUser.user.name, currentUser.user.password)
       .then((response) => {
         if (response.status === 200) {
-          setIsLoading(false);
+          console.log(
+            "SUCCESSFUL 200 received from getClaimById",
+            response.data
+          );
           setClaim(response.data);
-          console.log("SUCCESSFUL 200 received from getClaimById", response.data)
+          checkClaimStatus(response.data);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 1500);
         } else {
           console.log("something went wrong", response.status);
         }
       })
       .catch((error) => {
         console.log("something went wrong", error);
-      })};
-  }, [params.claim]);
+      });
+  };
+
+  const loadNotes = () => {
+    setIsLoading(true);
+    getNotesByClaimId(
+      params.claim,
+      currentUser.user.name,
+      currentUser.user.password
+    )
+      .then((response) => {
+        console.log(
+          "SUCCESSFUL 200 received from getNotesByClaimId",
+          response.data
+        );
+        setNote(response.data);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1500);
+      })
+      .catch((error) => {
+        console.log("something went wrong", error);
+      });
+  };
+
+  const checkClaimStatus = (claim) => {
+    if (claim.claimStatus === "O") {
+      setAwaitingAssessment(true);
+    } else 
+      setAwaitingAssessment(false);
+    if (claim.claimStatus === "C" || claim.claimStatus === "R") {
+      setArchived(true);
+    }
+  };
 
   return (
     <>
-    {claim && (
-      <div className="container content-container p-5 pt-0">
-        <div className="row">
-          <div className="text-center mt-5 pt-5 text-white">
-            <h1>
-              <strong>Claim {claim.claimNumber}</strong>
-            </h1>
-            {claim.claimStatus !== "C" && claim.claimStatus !== "R" && claim.claimStatus !== "H" ? (
-              <p className="lead">View and  Edit claim here</p>
-            ) : (
-              <p className="lead">ARCHIVED</p>
-            )}
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-12 card" id="claimForm">
-            <div className="card-body">
-              <div className="row">
-                <div className="col-12 col-lg-6">
-                  <ClaimForm claim={claim} archived={archived}/>
+      {claim && (
+        <div className="container-fluid content-container p-5 pt-0">
+          <div className="row">
+            <div className="col-lg-6">
+              <div className="mt-5 pt-5 text-white" style={{ display: "flex" }}>
+                <h1>Claim {claim.id}</h1>
+                {archived && (
+                  <p style={{ margin: "21px 0px 0px 10px" }}>ARCHIVED</p>
+                )}
+              </div>
+              <div className="card mb-5" id="claimForm">
+                <div className="card-body">
+                  <ClaimForm
+                    claim={claim}
+                    archived={archived}
+                    awaitingAssessment={awaitingAssessment}
+                    isLoading={isLoading}
+                    loadClaim={loadClaim}
+                    loadNotes={loadNotes}
+                  />
                 </div>
-                <div className="col-12 col-lg-6">
-                  <TaskList claim={claim} archived={archived}/>
-                  <NewTaskForm claim={claim} archived={archived}/>
-                  <NoteList claim={claim} archived={archived}/>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="mt-xl-5 pt-xl-5 text-white">
+                <h1>Tasks</h1>
+              </div>
+              <Task claim={claim} archived={archived} />
+              <div className="mt-5 text-white">
+                <h1>Notes</h1>
+              </div>
+              <div className="card">
+                <div className="card-body">
+                  <NoteList
+                    note={note}
+                    archived={archived}
+                    isLoading={isLoading}
+                  />
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-)}
+      )}
     </>
   );
 };

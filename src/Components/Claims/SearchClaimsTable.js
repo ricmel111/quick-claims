@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../Contexts/UserContexts";
 import {
-  getAllClaimsByClaimNumber,
+  getClaimById,
   getAllClaimsByLastName,
-  getAllClaimsByPolicyNumber,
-  getClaimsData,
+  getAllClaimsByPolicyNumber
 } from "../../Data/DataFunctions";
 import ClaimsTableRow from "./ClaimsTableRow";
 import loadingGif from "../../../src/giphy.gif";
@@ -23,6 +22,7 @@ const SearchClaimsTable = (props) => {
         currentUser.user.password
       )
         .then((response) => {
+          console.log("TEST1", response.data)
           setClaims(response.data);
           setIsLoading(false);
         })
@@ -40,6 +40,7 @@ const SearchClaimsTable = (props) => {
         currentUser.user.password
       )
         .then((response) => {
+          console.log("TEST2", response.data)
           setClaims(response.data);
           setIsLoading(false);
         })
@@ -51,20 +52,23 @@ const SearchClaimsTable = (props) => {
       props.claimIdSearchNbr !== undefined
     ) {
       setIsLoading(true);
-      getAllClaimsByClaimNumber(
+      getClaimById(
         props.claimIdSearchNbr,
         currentUser.user.name,
         currentUser.user.password
       )
-        .then((response) => {
-          setClaims(response.data);
-          setTimeout(() => {
+      .then(response => {
+        if(response.status !== 404) {
+            setClaims(response.data);
+        } else {
+            console.log("404 error: Not found");
             setIsLoading(false);
-          }, 1000);
-        })
-        .catch((error) => {
-          console.log("something went wrong", error);
-        });
+        }
+    })
+    .catch((error) => {
+        console.log("something went wrong", error);
+        setIsLoading(false);
+    });
     } else {
       setClaims([]);
     }
@@ -77,7 +81,7 @@ const SearchClaimsTable = (props) => {
         <table className="table text-center align-middle mt-5">
           <thead>
             <tr>
-              <th scope="col">Claim Number</th>
+              <th scope="col">Claim Id</th>
               <th scope="col">Policy Nbr</th>
               <th scope="col">First Name</th>
               <th scope="col">Last Name</th>
@@ -85,6 +89,7 @@ const SearchClaimsTable = (props) => {
               <th scope="col"></th>
             </tr>
           </thead>
+          {claims.policy}
           {claims.map((claim, index) => (
             <ClaimsTableRow claim={claim} key={index} />
           ))}

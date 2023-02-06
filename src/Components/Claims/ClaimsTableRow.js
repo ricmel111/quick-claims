@@ -6,11 +6,11 @@ const ClaimsTableRow = (props) => {
 
   const codeToString = {
     O: 'Awaiting Assessment',
-    P: 'In Progress',
     R: 'Rejected',
-    A: 'Awaiting Payment',
-    C: 'Paid & Closed',
-    H: 'High Value'
+    H: 'High Value',
+    P: 'Accepted - In Progress',
+    A: 'Accepted - Awaiting Payment',
+    C: 'Accepted Paid',
   }
   
   const statusString = codeToString[props.claim.claimStatus];
@@ -18,7 +18,7 @@ const ClaimsTableRow = (props) => {
   return (
     <tbody>
       <tr>
-        <td>{props.claim.claimNumber}</td>
+        <td>{props.claim.id}</td>
         <td>{props.claim.policyNumber}</td>
         <td>{props.claim.firstName}</td>
         <td>{props.claim.lastName}</td>

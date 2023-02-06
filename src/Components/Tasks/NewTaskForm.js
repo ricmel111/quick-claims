@@ -8,12 +8,13 @@ const NewTaskForm = (props) => {
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState("");
   const currentUser = useContext(UserContext);
+  const [touched, setTouched] = useState(false);
 
   const initialTaskState = {
     taskStatus: "O",
     taskText: "",
     taskDate: new Date().toISOString().slice(0, 10),
-    claimId: props.claim ? props.claim.id : ""
+    claimId: props.claim ? props.claim.id : "",
   };
 
   const formReducer = (state, data) => {
@@ -23,6 +24,7 @@ const NewTaskForm = (props) => {
   const [newTask, dispatch] = useReducer(formReducer, initialTaskState);
 
   const handleChange = (event) => {
+    setTouched(true);
     dispatch({ field: event.target.id, value: event.target.value });
   };
 
@@ -40,7 +42,9 @@ const NewTaskForm = (props) => {
     addNewTask(newTask, currentUser.user.name, currentUser.user.password)
       .then((response) => {
         if (response.status === 200) {
-          setMessage("New transaction added with id " + response.data.id);
+          setTimeout(() => {
+          setMessage("New task added with id " + response.data.id);
+          }, 1500);
         } else {
           setMessage(
             "Something went wrong - status code was " + response.status
@@ -50,6 +54,10 @@ const NewTaskForm = (props) => {
       .catch((error) => {
         setMessage("Something went wrong - " + error);
       });
+      setTimeout(() => {
+      props.loadTaskList();
+    }, 1500);
+      newTask.taskText = "";
   };
 
   const validateData = () => {
@@ -63,8 +71,8 @@ const NewTaskForm = (props) => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-group row">
-          <label htmlFor="newTask" className="col-2 col-form-label">
+        <div className="form-group row mt-1">
+          <label htmlFor="newTask" className="col-2 col-form-label mt-2">
             Add Task
           </label>
           <div className="col-8">
@@ -77,8 +85,8 @@ const NewTaskForm = (props) => {
               placeholder="Add new task"
             />
           </div>
-          <div className="col-2">
-            <button type="submit" className="btn btn-secondary">
+          <div className="col-2 mt-2">
+            <button type="submit" className="btn btn-secondary" disabled={!touched}>
               Add
             </button>
           </div>

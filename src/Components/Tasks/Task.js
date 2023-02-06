@@ -1,58 +1,50 @@
-import { useState } from "react";
-import { updateTaskStatus } from "../../Data/DataFunctions";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../Contexts/UserContexts";
+import { getTasksByClaimId } from "../../Data/DataFunctions";
+import NewTaskForm from "./NewTaskForm";
+import TaskList from "./TaskList";
 
 const Task = (props) => {
-  const [message, setMessage] = useState("");
-  const [task, setTask] = useState([]);
-  const [taskStatus, setTaskStatus] = useState(props.task.taskStatus);
+    const [task, setTask] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const currentUser = useContext(UserContext);
 
-  const codeToString = {
-    O: 'Open',
-    C: 'Closed'
-  }
-
-  const statusString = codeToString[taskStatus]
-
-  const updateTask = () => {
-    const updatedTaskStatus = taskStatus === "C" ? "O" : "C";
-    updateTaskStatus(
-      { ...props.task, taskStatus: updatedTaskStatus },
-      props.currentUser.user.name,
-      props.currentUser.user.password
-    )
-      .then((response) => {
-        if (response.status === 200) {
-          setMessage("Task " + response.data.id + " was set to ");
-          setTaskStatus(updatedTaskStatus);
-        } else {
-          setMessage(
-            "Something went wrong - status code was " + response.status
-          );
-        }
-      })
-      .catch((error) => {
-        setMessage("Something went wrong - " + error);
-      });
-  };
+    useEffect(() => {
+        loadTaskList();
+      }, []);
+    
+      const loadTaskList = () => {
+        getTasksByClaimId(
+          props.claim.id,
+          currentUser.user.name,
+          currentUser.user.password
+        )
+          .then((response) => {
+            console.log(
+              "SUCCESSFUL 200 received from getTasksByClaimId",
+              response.data
+            );
+            setTask(response.data);
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 1500);
+          })
+          .catch((error) => {
+            console.log("something went wrong", error);
+          });
+      };
 
   return (
-    <>
-      <li className="list-group-item" style={taskStatus === "C" ? {color: "#ccc"} : {}}>
-        <div className="row align-items-center">
-          <div className="col-3">
-            <b>{props.task.taskDate}</b>
-          </div>
-          <div className="col-5">{props.task.taskText}</div>
-          <div className="col-2">{statusString}</div>
-          <div className="col-2">
-            <button className="btn btn-primary btn-sm" onClick={updateTask}>
-              {taskStatus === "C" ? "Open" : "Close"}
-            </button>
-          </div>
-          {/* {message} */}
-        </div>
-      </li>
-    </>
+    <div className="card" id="task">
+      <div className="card-body">
+        <TaskList claim={props.claim} archived={props.archived} isLoading={isLoading} task={task}/>
+      </div>
+      {!props.archived &&
+      <div className="card-footer">
+        <NewTaskForm claim={props.claim} archived={props.archived} loadTaskList={loadTaskList} />
+      </div>
+      }
+    </div>
   );
 };
 export default Task;

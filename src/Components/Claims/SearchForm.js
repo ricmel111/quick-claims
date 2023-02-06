@@ -73,7 +73,6 @@ const SearchForm = (props) => {
 
   return (
     <>
-      <h3 className="card-title text-center p-3">Search Claims</h3>
       <form onSubmit={doSearch} className="col-10">
         <div className="form-group row">
           <label htmlFor="searchClaimId" className="col-sm-5 col-form-label">

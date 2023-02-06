@@ -66,18 +66,31 @@ export const addNewNote = (note, username, password) => {
   return axios({
     url: "http://localhost:8080/api/claim/"+note.claimId+"/note",
     method: "POST",
-    headers: { Accept: "application/json", ...getAuthHeader(username, password) },
+    headers: {
+      Accept: "application/json", ...getAuthHeader("vik", "123")
+    },
     data: note,
+  });
+};
+
+export const getClaimById = (id, username, password) => {
+  console.log("DATA FUNCTIONS - getClaimById ", id);
+  return axios({
+    url: "http://localhost:8080/api/claim/" + id,
+    method: "GET",
+    headers: {
+      Accept: "application/json", ...getAuthHeader("vik", "123")
+    }
   });
 };
 
 export const getAllOpenClaimsAxios = (username, password) => {
   console.log("DATA FUNCTIONS - getAllOpenClaims");
   return axios({
-    url: "http://localhost:8080/api/claim/?claim-status=O,P,A",
+    url: "http://localhost:8080/api/claim/?claim-status=O",
     method: "GET",
     headers: {
-      Accept: "application/json", ...getAuthHeader(username, password)
+      Accept: "application/json", ...getAuthHeader("vik", "123")
     }
   });
 };
@@ -100,28 +113,6 @@ export const getAllClaimsByPolicyNumber = (policyNbr, username, password) => {
     method: "GET",
     headers: {
       Accept: "application/json", ...getAuthHeader(username, password)
-    }
-  });
-};
-
-export const getAllClaimsByClaimNumber = (claimNumber, username, password) => {
-  console.log("DATA FUNCTIONS - getAllClaimsByClaimNumber ", claimNumber);
-  return axios({
-    url: "http://localhost:8080/api/claim/?claimnumber=" + claimNumber,
-    method: "GET",
-    headers: {
-      Accept: "application/json", ...getAuthHeader(username, password)
-    }
-  });
-};
-
-export const getClaimById = (id, username, password) => {
-  console.log("DATA FUNCTIONS - getClaimById ", id);
-  return axios({
-    url: "http://localhost:8080/api/claim/" + id,
-    method: "GET",
-    headers: {
-      Accept: "application/json", ...getAuthHeader("vik", "123")
     }
   });
 };

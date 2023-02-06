@@ -107,10 +107,10 @@ const Claim = () => {
   }, []);
 
   useEffect(() => {
-    checkArchived();
+    checkClaimStatus();
   }, []);
 
-  const checkArchived = () => {
+  const checkClaimStatus = () => {
     console.log("check archived 1", claims);
     if (claims.claimStatus === "C" || claims.claimStatus === "R") {
       setArchived(!archived);
@@ -227,13 +227,11 @@ const Claim = () => {
                           >
                             {/* <option value="">Select...</option> */}
                             <option value="O">Awaiting Assessment</option>
-                            <option value="P">In Progress</option>
-                            <option value="R">Rejected</option>
-                            <option value="A">Awaiting Payment</option>
-                            <option value="C">
-                              Paid&nbsp;&amp;&nbsp;Closed
-                            </option>
                             <option value="H">High Value</option>
+                            <option value="R">Rejected</option>
+                            <option value="P">Accepted - In Progress</option>
+                            <option value="A">Accepted - Awaiting Payment</option>
+                            <option value="C">Accepted - Paid</option>
                           </select>
                         </div>
                       </div>

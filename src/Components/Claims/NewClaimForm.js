@@ -10,7 +10,6 @@ const NewClaimForm = () => {
   const currentUser = useContext(UserContext);
   const [valid, setValid] = useState(true);
   const [touched, setTouched] = useState(false);
-  const [defaultPolicyType, setDefaultPolicyType] = useState("");
 
   const onSubmit = (data, event) => {
     event.preventDefault();
@@ -77,6 +76,7 @@ const NewClaimForm = () => {
     incidentDescription: "",
     incidentDate: "",
     furtherDetails: "",
+    paymentAmount: ""
   };
 
   const formReducer = (state, data) => {
@@ -113,17 +113,15 @@ const NewClaimForm = () => {
   };
 
   return (
-    <div className="content-container container p-5 pt-0">
+    <div className="content-container-color p-5 pt-0">
+      <div className="container">
       <div className="row">
-        <div className="text-center mt-5 pt-5 text-white">
-          <h1>
-            <strong>New Claim</strong>
-          </h1>
-          <p className="lead">Fill in the form below to start making a claim</p>
+        <div className="col-12 col-xl-6 offset-xl-3 mt-5 pt-5 text-white">
+          <h1>New Claim</h1>
         </div>
       </div>
       <div className="row">
-        <div className="col-12 col-lg-8 offset-lg-2 card" id="claimForm">
+        <div className="col-12 col-xl-6 offset-xl-3 card" id="claimForm">
           <div className="card-body">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form-group row">
@@ -380,7 +378,7 @@ const NewClaimForm = () => {
                 <div className="col-7">
                   <textarea
                     cols="40"
-                    rows="5"
+                    rows="3"
                     className="form-control"
                     id="incidentDescription"
                     value={newClaim.incidentDescription}
@@ -417,7 +415,7 @@ const NewClaimForm = () => {
                 <div className="col-7">
                   <textarea
                     cols="40"
-                    rows="5"
+                    rows="3"
                     className="form-control"
                     id="furtherDetails"
                     value={newClaim.furtherDetails}
@@ -452,6 +450,7 @@ const NewClaimForm = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

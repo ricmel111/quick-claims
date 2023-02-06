@@ -37,7 +37,12 @@ const SearchClaimsPage = (props) => {
     <div className="content-container">
       <div className="container p-5">
         <div className="row">
-          <div className="col-12 col-lg-10 offset-lg-1 card" id="claimForm">
+          <div className="col-12 col-xl-10 offset-xl-1 mt-5 pt-5 text-white">
+            <h1>Search Claims</h1>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12 col-xl-10 offset-xl-1 card" id="claimForm">
             <div className="card-body text-center">
               <SearchForm
                 setClaimIdSearchNbr={props.setClaimIdSearchNbr}

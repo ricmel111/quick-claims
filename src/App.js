@@ -10,7 +10,6 @@ import NewClaimForm from "./Components/Claims/NewClaimForm";
 import Login from "./Components/Login";
 import HomePage from "./Components/HomePage";
 import ClaimPage from "./Components/Claims/ClaimPage";
-import Claim from "./Components/Claims/Claim";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import { UserContext } from "./Contexts/UserContexts";

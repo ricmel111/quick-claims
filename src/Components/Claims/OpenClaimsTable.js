@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { getAllOpenClaimsAxios } from "../../Data/DataFunctions";
+import { getAllOpenClaims } from "../../Data/DataFunctions";
 import { useSelector, useDispatch } from "react-redux";
 import ClaimsTableRow from "./ClaimsTableRow";
 import { UserContext } from "../../Contexts/UserContexts";
@@ -28,7 +28,7 @@ const OpenClaimsTable = () => {
       setIsLoading(false);
     } else {
       console.log("getting open claims via rest");
-      getAllOpenClaimsAxios(currentUser.user.name, currentUser.user.password)
+      getAllOpenClaims(currentUser.user.name, currentUser.user.password)
         .then((response) => {
           setClaims(response.data);
           dispatch({ type: "updateClaims", value: response.data });
@@ -59,7 +59,7 @@ const OpenClaimsTable = () => {
                     <img src={loadingGif} alt="wait until the page loads" />
                   )}
                   {!isLoading && (
-                    <table className="table text-center align-middle">
+                    <table className="table text-center align-middle" data-testid="table">
                       <thead>
                         <tr>
                           <th scope="col">Claim Id</th>

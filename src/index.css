@@ -1,6 +1,6 @@
 /*Site*/
 html {
-  background-image: url(https://unsplash.com/photos/nY14Fs8pxT8/download?ixid=MnwxMjA3fDB8MXxzZWFyY2h8M3x8dGVjaCUyMGJhY2tncm91bmR8ZW58MHx8fHwxNjY4MTI1ODYw&force=true&w=2400);
+  background-image: url(quick-claims-bg.jpg);
   background-size: cover;
   background-attachment: fixed;
   background-color:rgb(77, 54, 132);
@@ -225,6 +225,8 @@ input {
   border: none;
 }
 
+#newClaimForm .check {color: #1ae31a; margin-top: 12px; position: absolute; }
+
 #claimForm .card {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -239,7 +241,7 @@ input {
 .form-select:focus {
   color: #212529;
   background-color: #fff;
-  border-color: rgba(77, 54, 132) !important;
+  border: none;
   box-shadow: 0 0 0 0.25rem rgba(175, 46, 144, 0.25) !important;
 }
 
@@ -262,4 +264,19 @@ input {
 textarea.form-control {
 line-height: 20px;
     padding-top: 16px;
+}
+
+.formErrorControl {
+  border: 2px solid #f00;
+}
+
+.text-danger {
+  color: rgb(253, 87, 171) !important;
+}
+
+.required::after 
+{
+    content: "*";
+    margin-left: 3px;
+    color: rgb(253, 87, 171); 
 }

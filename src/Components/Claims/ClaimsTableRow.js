@@ -8,12 +8,14 @@ const ClaimsTableRow = (props) => {
     O: 'Awaiting Assessment',
     R: 'Rejected',
     H: 'High Value',
-    P: 'Accepted - In Progress',
+    P: 'Assessed - In Progress',
     A: 'Accepted - Awaiting Payment',
-    C: 'Accepted Paid',
+    C: 'Accepted - Paid',
   }
   
   const statusString = codeToString[props.claim.claimStatus];
+
+  console.log("Archived", props.archived);
 
   return (
     <tbody>
@@ -46,7 +48,7 @@ const ClaimsTableRow = (props) => {
                     Claim: {props.claim.id}
                   </h3>
                   <Link to={`/claim/${props.claim.id}`}>
-                    <button className="btn btn-primary btn-sm">View/Edit</button>
+                    <button className="btn btn-primary btn-sm">{props.archived == true ? "View" : "View/Edit"}</button>
                   </Link>
                 </div>
               </div>
@@ -54,7 +56,7 @@ const ClaimsTableRow = (props) => {
           </div>
           <div className="row">
             <div className="col-4 offset-1">
-              <strong>First Name: </strong>
+              <strong>First  Name: </strong>
               {props.claim.firstName}
               <br />
               <strong>Last Name: </strong>

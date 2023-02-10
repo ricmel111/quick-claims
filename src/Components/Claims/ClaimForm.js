@@ -1,21 +1,19 @@
-import { useEffect, useContext, useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  addNewNote,
-  getClaimById,
-  updateClaim,
-} from "../../Data/DataFunctions";
+import { addNewNote, updateClaim } from "../../Data/DataFunctions";
 import { UserContext } from "../../Contexts/UserContexts";
 import loadingGif from "../../../src/giphy.gif";
 
 const ClaimForm = (props) => {
-  const [changeStatusSelected, setChangeStatusSelected] = useState(false);
+  const [changeStatusSelected, setChangeStatusSelected] = useState("");
   const { handleSubmit, reset } = useForm();
   const [editable, setEditable] = useState(false);
   const [message, setMessage] = useState("");
   const [PolicyTypeSelected, setPolicyTypeSelected] = useState("");
   const currentUser = useContext(UserContext);
   const [touched, setTouched] = useState(false);
+  const [submitDisabled, setSubmitDisabled] = useState(false);
+  const [tasksMessage, setTasksMessage] = useState("");
 
   const resetState = () => {
     noteState.noteText = "";
@@ -40,6 +38,7 @@ const ClaimForm = (props) => {
   };
 
   const initialState = {
+    noteText: "",
     id: props.claim.id,
     claimStatus: props.claim.claimStatus,
     paymentAmount: props.claim.paymentAmount,
@@ -58,11 +57,11 @@ const ClaimForm = (props) => {
     claimReason: props.claim.claimReason,
     incidentDescription: props.claim.incidentDescription,
     incidentDate: props.claim.incidentDate,
-    furtherDetails: props.claim.furtherDetails
+    furtherDetails: props.claim.furtherDetails,
   };
 
   const noteInitialState = {
-    noteDate: new Date().toISOString().slice(0, 10),
+    noteDate: "",
     noteText: "",
     claimId: props.claim.id,
   };
@@ -82,6 +81,40 @@ const ClaimForm = (props) => {
     noteInitialState
   );
 
+  const handleStatusChange = (event) => {
+    if (event.target.value === "A" || event.target.value === "C") {
+      props.loadTaskList();
+      //props.setOpenTasks(props.task.filter(task => task.taskStatus === "O"));
+    } else {
+      setTasksMessage("");
+      setSubmitDisabled(false);
+    }
+
+    setChangeStatusSelected(event.target.value);
+    handleChange(event);
+  };
+
+  useEffect((event) => {
+    if ((props.openTasks) && (changeStatusSelected)) {
+      console.log("OpenTasks1", props.openTasks);
+      if (props.openTasks.length > 0) {
+        console.log("OpenTasks2", props.openTasks);
+        setSubmitDisabled(true);
+        setTasksMessage(
+          "You have open tasks. Please complete them before submitting."
+        );
+      } else {
+        setSubmitDisabled(false);
+        setTasksMessage("");
+      }
+    }
+  }, [props.openTasks]);
+
+  const handlePolicyType = (event) => {
+    setPolicyTypeSelected(event.target.value);
+    handleChange(event);
+  };
+
   const handleChange = (event) => {
     setTouched(true);
     if (event.target.id === "noteText") {
@@ -89,16 +122,6 @@ const ClaimForm = (props) => {
     } else {
       dispatch({ field: event.target.id, value: event.target.value });
     }
-  };
-
-  const handleStatusChange = (event) => {
-    setChangeStatusSelected(event.target.value);
-    handleChange(event);
-  };
-
-  const handlePolicyType = (event) => {
-    setPolicyTypeSelected(event.target.value);
-    handleChange(event);
   };
 
   const onSubmit = (data, event) => {
@@ -110,6 +133,7 @@ const ClaimForm = (props) => {
           if (response.status === 200) {
             setMessage("Claim " + response.data.id + " was updated");
             props.loadClaim();
+            noteState.noteText = "";
           } else {
             setMessage(
               "Something went wrong - status code was " + response.status
@@ -124,7 +148,7 @@ const ClaimForm = (props) => {
           .then((response) => {
             if (response.status === 200) {
               setMessage("Note " + response.data.id + " was added");
-                props.loadNotes();
+              props.loadNotes();
             } else {
               setMessage(
                 "Something went wrong - status code was " + response.status
@@ -143,10 +167,13 @@ const ClaimForm = (props) => {
     reset();
     resetState();
     props.loadClaim();
+    setChangeStatusSelected(props.claim.claimStatus);
     noteState.noteText = "";
     setEditable(false);
     setTouched(false);
-  }
+    setTasksMessage("");
+    setSubmitDisabled(false);
+  };
 
   return (
     <>
@@ -172,16 +199,17 @@ const ClaimForm = (props) => {
                 <option value="O">Awaiting Assessment</option>
                 <option value="H">High Value</option>
                 <option value="R">Rejected</option>
-                <option value="P">Accepted - In Progress</option>
+                <option value="P">Assessed - In Progress</option>
                 <option value="A">Accepted - Awaiting Payment</option>
-                {!props.awaitingAssessment && (
+                {props.claim.claimStatus === "A" && (
                   <option value="C">Accepted - Paid</option>
                 )}
               </select>
+              <p className="text-danger mt-2">{tasksMessage}</p>
             </div>
           </div>
           {changeStatusSelected !== props.claim.claimStatus &&
-            changeStatusSelected != "" && (
+            changeStatusSelected !== "" && (
               <div className="form-group row">
                 <label htmlFor="note" className="col-sm-5 col-form-label">
                   Add note
@@ -195,31 +223,35 @@ const ClaimForm = (props) => {
                     onChange={handleChange}
                     placeholder="Add note here"
                     disabled={!editable}
+                    required={true}
                   />
                 </div>
               </div>
             )}
-{changeStatusSelected === 'A' || props.claim.paymentAmount &&
-            changeStatusSelected != "" && (
-              <div className="form-group row">
-                <label htmlFor="paymentAmount" className="col-sm-5 col-form-label">
-                  Amount Paid
-                </label>
-                <div className="col-sm-7">
+          {(props.claim.claimStatus === "A" ||
+            changeStatusSelected === "A") && (
+            <div className="form-group row">
+              <label
+                htmlFor="paymentAmount"
+                className="col-sm-5 col-form-label"
+              >
+                Payment Amount
+              </label>
+              <div className="col-sm-7">
                 <span id="dollar">
                   <input
                     type="number"
                     className="form-control"
                     id="paymentAmount"
-                    value={state.paymentAmount}
+                    value={state.paymentAmount || undefined}
                     onChange={handleChange}
-                    placeholder="Add payment amount"
                     disabled={!editable}
+                    required={true}
                   />
-                  </span>
-                </div>
+                </span>
               </div>
-            )}
+            </div>
+          )}
           <hr></hr>
           <div className="form-group row">
             <label htmlFor="policyNumber" className="col-sm-5 col-form-label">
@@ -492,7 +524,7 @@ const ClaimForm = (props) => {
                 type="date"
                 className="form-control"
                 id="incidentDate"
-                value={state.incidentDate}
+                value={state.incidentDate || ""}
                 onChange={handleChange}
                 disabled={!editable}
               />
@@ -518,12 +550,21 @@ const ClaimForm = (props) => {
           {!props.archived && (
             <div className="form-group row mt-4">
               <div className="col-4 offset-5">
-                <button type="submit" className="btn btn-primary w-100">
+                <button
+                  type="submit"
+                  disabled={submitDisabled}
+                  className="btn btn-primary w-100"
+                >
                   {editable ? "Save Claim" : "Edit Claim"}
                 </button>
               </div>
               <div className="col-3">
-                <button onClick={clearForm} type="button" className="btn btn-secondary w-100" disabled={!touched}>
+                <button
+                  onClick={clearForm}
+                  type="button"
+                  className="btn btn-secondary w-100"
+                  disabled={!touched}
+                >
                   Reset
                 </button>
               </div>

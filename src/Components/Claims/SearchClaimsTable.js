@@ -12,6 +12,7 @@ const SearchClaimsTable = (props) => {
   const [claims, setClaims] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const currentUser = useContext(UserContext);
+  const [archived, setArchived] = useState();
 
   useEffect(() => {
     if (props.lastName !== "" && props.lastName !== undefined) {
@@ -22,8 +23,8 @@ const SearchClaimsTable = (props) => {
         currentUser.user.password
       )
         .then((response) => {
-          console.log("TEST1", response.data)
           setClaims(response.data);
+          checkClaimStatus(response.data);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -40,8 +41,8 @@ const SearchClaimsTable = (props) => {
         currentUser.user.password
       )
         .then((response) => {
-          console.log("TEST2", response.data)
           setClaims(response.data);
+          checkClaimStatus(response.data);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -58,21 +59,32 @@ const SearchClaimsTable = (props) => {
         currentUser.user.password
       )
       .then(response => {
+        setIsLoading(false);
         if(response.status !== 404) {
-            setClaims(response.data);
+            setClaims([response.data]);
+            checkClaimStatus(response.data);
+            
         } else {
             console.log("404 error: Not found");
-            setIsLoading(false);
         }
     })
     .catch((error) => {
-        console.log("something went wrong", error);
+        setClaims([]);
         setIsLoading(false);
+        console.log("something went wrong", error);
     });
     } else {
       setClaims([]);
     }
   }, [props.lastName, props.policySearchNbr, props.claimIdSearchNbr]);
+
+  const checkClaimStatus = (claims) => {
+    if (claims.claimStatus === "C" || claims.claimStatus === "R") {
+      setArchived(true);
+    } else {
+      setArchived(false);
+    }
+  };
 
   return (
     <>
@@ -89,9 +101,8 @@ const SearchClaimsTable = (props) => {
               <th scope="col"></th>
             </tr>
           </thead>
-          {claims.policy}
           {claims.map((claim, index) => (
-            <ClaimsTableRow claim={claim} key={index} />
+            <ClaimsTableRow claim={claim} key={index} archived={archived} />
           ))}
         </table>
       )}

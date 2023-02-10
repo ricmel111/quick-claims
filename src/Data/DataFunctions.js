@@ -26,7 +26,7 @@ export const addNewCLaim = (claim, username, password) => {
 };
 
 export const updateClaim = (claim, username, password) => {
-  console.log("DATA FUNCTIONS - updateClaim", claim);
+  console.log("DATA FUNCTIONS - updateClaim", claim, username, password);
   return axios({
     url: "http://localhost:8080/api/claim/" + claim.id,
     method: "PUT",
@@ -84,7 +84,7 @@ export const getClaimById = (id, username, password) => {
   });
 };
 
-export const getAllOpenClaimsAxios = (username, password) => {
+export const getAllOpenClaims = (username, password) => {
   console.log("DATA FUNCTIONS - getAllOpenClaims");
   return axios({
     url: "http://localhost:8080/api/claim/?claim-status=O",

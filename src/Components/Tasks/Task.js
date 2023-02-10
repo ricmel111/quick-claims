@@ -1,49 +1,41 @@
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../Contexts/UserContexts";
-import { getTasksByClaimId } from "../../Data/DataFunctions";
 import NewTaskForm from "./NewTaskForm";
 import TaskList from "./TaskList";
+import loadingGif from "../../../src/giphy.gif";
 
 const Task = (props) => {
-    const [task, setTask] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const currentUser = useContext(UserContext);
-
-    useEffect(() => {
-        loadTaskList();
-      }, []);
-    
-      const loadTaskList = () => {
-        getTasksByClaimId(
-          props.claim.id,
-          currentUser.user.name,
-          currentUser.user.password
-        )
-          .then((response) => {
-            console.log(
-              "SUCCESSFUL 200 received from getTasksByClaimId",
-              response.data
-            );
-            setTask(response.data);
-            setTimeout(() => {
-              setIsLoading(false);
-            }, 1500);
-          })
-          .catch((error) => {
-            console.log("something went wrong", error);
-          });
-      };
-
   return (
     <div className="card" id="task">
+      <div className="text-center">
+          {props.isLoading && (
+            <img src={loadingGif} alt="wait until the page loads" />
+          )}
+        </div>
+        {!props.isLoading && (
+          <>
       <div className="card-body">
-        <TaskList claim={props.claim} archived={props.archived} isLoading={isLoading} task={task}/>
+        <TaskList
+          claim={props.claim}
+          archived={props.archived}
+          isLoading={props.isLoading}
+          task={props.task}
+          loadTaskList={props.loadTaskList}
+        />
       </div>
-      {!props.archived &&
-      <div className="card-footer">
-        <NewTaskForm claim={props.claim} archived={props.archived} loadTaskList={loadTaskList} />
-      </div>
-      }
+      {(!props.archived ||
+        props.claim.claimStatus === "O" ||
+        props.claim.claimStatus === "P") && (
+        <div className="card-footer">
+          <NewTaskForm
+            claim={props.claim}
+            archived={props.archived}
+            loadTaskList={props.loadTaskList}
+            openTasks={props.openTasks}
+            setOpenTasks={props.setOpenTasks}
+          />
+        </div>
+      )}
+      </>
+        )}
     </div>
   );
 };

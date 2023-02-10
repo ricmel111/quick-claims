@@ -1,4 +1,4 @@
-import Note from "./Note";
+import NoteListItem from "./NoteListItem";
 import loadingGif from "../../../src/giphy.gif";
 
 const NoteList = (props) => {
@@ -20,7 +20,7 @@ const NoteList = (props) => {
             )}
             <ul className="notes list-group list-group-flush">
               {props.note.map((note, index) => (
-                <Note note={note} key={index} />
+                <NoteListItem note={note} key={index} />
               ))}
             </ul>
           </>

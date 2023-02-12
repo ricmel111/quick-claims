@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../../Contexts/UserContexts";
 import { updateTaskStatus } from "../../Data/DataFunctions";
 
@@ -46,11 +46,16 @@ const TaskListItem = (props) => {
           </div>
           <div className="col-5">{props.task.taskText}</div>
           <div className="col-2">{statusString}</div>
+          {!props.archived &&
           <div className="col-2">
-            <button className="btn btn-primary btn-sm" onClick={updateTask}>
+            <button 
+            className="btn btn-primary btn-sm" 
+            onClick={updateTask}
+            >
               {taskStatus === "C" ? "Re-open" : "Close"}
             </button>
           </div>
+          }
           {/* {message} */}
         </div>
       </li>

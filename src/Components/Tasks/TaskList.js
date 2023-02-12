@@ -20,6 +20,7 @@ const TaskList = (props) => {
                   loadTaskList={props.loadTaskList}
                   openTasks={props.openTasks}
                   setOpenTasks={props.setOpenTasks}
+                  archived={props.archived}
                 />
               ))}
             </ul>

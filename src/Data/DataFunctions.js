@@ -1,7 +1,5 @@
 import axios from "axios";
 
-const headers = new Headers({"Accept" : "application/json"})
-
 const getAuthHeader = (username, password) => {
     return {"Authorization" : "Basic " + btoa(`${username}:${password}`)}
 }
@@ -20,18 +18,18 @@ export const addNewCLaim = (claim, username, password) => {
   return axios({
     url: "http://localhost:8080/api/claim",
     method: "POST",
-    headers: { Accept: "application/json", ...getAuthHeader("vik", "123") },
+    headers: { Accept: "application/json", ...getAuthHeader(username, password) },
     data: claim,
   });
 };
 
 export const updateClaim = (claim, username, password) => {
-  console.log("DATA FUNCTIONS - updateClaim", claim, username, password);
+  console.log("DATA FUNCTIONS - updateClaim", claim);
   return axios({
     url: "http://localhost:8080/api/claim/" + claim.id,
     method: "PUT",
     headers: {
-      Accept: "application/json", ...getAuthHeader("vik", "123")
+      Accept: "application/json", ...getAuthHeader(username, password)
     },
     data: claim
   });
@@ -43,7 +41,7 @@ export const addNewTask = (task, username, password) => {
     url: "http://localhost:8080/api/claim/"+task.claimId+"/task",
     method: "POST",
     headers: {
-      Accept: "application/json", ...getAuthHeader("vik", "123")
+      Accept: "application/json", ...getAuthHeader(username, password)
     },
     data: task,
   });
@@ -55,7 +53,7 @@ export const updateTaskStatus = (task, username, password) => {
     url: "http://localhost:8080/api/task/" + task.id,
     method: "PUT",
     headers: {
-      Accept: "application/json", ...getAuthHeader("vik", "123")
+      Accept: "application/json", ...getAuthHeader(username, password)
     },
     data: task
   });
@@ -67,7 +65,7 @@ export const addNewNote = (note, username, password) => {
     url: "http://localhost:8080/api/claim/"+note.claimId+"/note",
     method: "POST",
     headers: {
-      Accept: "application/json", ...getAuthHeader("vik", "123")
+      Accept: "application/json", ...getAuthHeader(username, password)
     },
     data: note,
   });
@@ -79,7 +77,7 @@ export const getClaimById = (id, username, password) => {
     url: "http://localhost:8080/api/claim/" + id,
     method: "GET",
     headers: {
-      Accept: "application/json", ...getAuthHeader("vik", "123")
+      Accept: "application/json", ...getAuthHeader(username, password)
     }
   });
 };
@@ -90,7 +88,7 @@ export const getAllOpenClaims = (username, password) => {
     url: "http://localhost:8080/api/claim/?claim-status=O",
     method: "GET",
     headers: {
-      Accept: "application/json", ...getAuthHeader("vik", "123")
+      Accept: "application/json", ...getAuthHeader(username, password)
     }
   });
 };
@@ -123,7 +121,7 @@ export const getTasksByClaimId = (id, username, password) => {
     url: "http://localhost:8080/api/task?claimId=" + id,
     method: "GET",
     headers: {
-      Accept: "application/json", ...getAuthHeader("vik", "123")
+      Accept: "application/json", ...getAuthHeader(username, password)
     }
   });
 };
@@ -134,7 +132,7 @@ export const getNotesByClaimId = (id, username, password) => {
     url: "http://localhost:8080/api/note?claimId=" + id,
     method: "GET",
     headers: {
-      Accept: "application/json", ...getAuthHeader("vik", "123")
+      Accept: "application/json", ...getAuthHeader(username, password)
     }
   });
 };

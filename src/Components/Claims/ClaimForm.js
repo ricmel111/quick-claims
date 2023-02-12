@@ -127,8 +127,16 @@ const ClaimForm = (props) => {
   const onSubmit = (data, event) => {
     event.preventDefault();
     if (editable) {
+      const updatedFields = {};
+      updatedFields.id = state.id;
+      Object.entries(state).forEach(([field, value]) => {
+        if (value !== initialState[field]) {
+          updatedFields[field] = value;
+        }
+      });
+
       setMessage("Saving...");
-      updateClaim(state, currentUser.user.name, currentUser.user.password)
+      updateClaim(updatedFields, currentUser.user.name, currentUser.user.password)
         .then((response) => {
           if (response.status === 200) {
             setMessage("Claim " + response.data.id + " was updated");
@@ -167,7 +175,7 @@ const ClaimForm = (props) => {
     reset();
     resetState();
     props.loadClaim();
-    setChangeStatusSelected(props.claim.claimStatus);
+    setChangeStatusSelected("");
     noteState.noteText = "";
     setEditable(false);
     setTouched(false);

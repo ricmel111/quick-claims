@@ -32,99 +32,103 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<Login />} />
             <Route
-              path="/new-claim" element={<NewClaimForm />} //temp
-              // element={
-              //   <ProtectedRoute
-              //     roles={["MANAGER"]}
-              //     element={<NewClaimForm />}
-              //   />  
-              // }
+              path="/new-claim"
+              element={
+                <ProtectedRoute
+                  roles={["MANAGER"]}
+                  element={<NewClaimForm />}
+                />
+              }
             />
             <Route
-              path="/claim/:claim" element={<ClaimPage />}//temp
-            //   element={
-            //     <ProtectedRoute
-            //       roles={["USER", "MANAGER"]}
-            //       element={<ClaimPage />}
-            // />
-            //   }
-              />
+              path="/claim/:claim"
+              element={
+                <ProtectedRoute
+                  roles={["USER", "MANAGER"]}
+                  element={<ClaimPage />}
+                />
+              }
+            />
             <Route
               path="/search"
               element={
                 <ProtectedRoute
-                roles={["USER", "MANAGER"]}
-                element={
-                  <SearchClaimsPage
-                    claimIdSearchNbr={claimIdSearchNbr}
-                    policySearchNbr={policySearchNbr}
-                    lastName={lastName}
-                    setClaimIdSearchNbr={setClaimIdSearchNbr}
-                    setPolicySearchNbr={setPolicySearchNbr}
-                    setLastName={setLastName}
-                  />}
-                  />
+                  roles={["USER", "MANAGER"]}
+                  element={
+                    <SearchClaimsPage
+                      claimIdSearchNbr={claimIdSearchNbr}
+                      policySearchNbr={policySearchNbr}
+                      lastName={lastName}
+                      setClaimIdSearchNbr={setClaimIdSearchNbr}
+                      setPolicySearchNbr={setPolicySearchNbr}
+                      setLastName={setLastName}
+                    />
+                  }
+                />
               }
             />
             <Route
               path="/search/claim/:claimSearchTerm"
               element={
                 <ProtectedRoute
-                roles={["USER", "MANAGER"]}
-              element={
-                  <SearchClaimsPage
-                    claimIdSearchNbr={claimIdSearchNbr}
-                    policySearchNbr={policySearchNbr}
-                    lastName={lastName}
-                    setClaimIdSearchNbr={setClaimIdSearchNbr}
-                    setPolicySearchNbr={setPolicySearchNbr}
-                    setLastName={setLastName}
-                    />}
+                  roles={["USER", "MANAGER"]}
+                  element={
+                    <SearchClaimsPage
+                      claimIdSearchNbr={claimIdSearchNbr}
+                      policySearchNbr={policySearchNbr}
+                      lastName={lastName}
+                      setClaimIdSearchNbr={setClaimIdSearchNbr}
+                      setPolicySearchNbr={setPolicySearchNbr}
+                      setLastName={setLastName}
                     />
-                }
-              />
+                  }
+                />
+              }
+            />
             <Route
               path="/search/policy/:policySearchTerm"
               element={
                 <ProtectedRoute
-                roles={["USER", "MANAGER"]}
-              element={
-                  <SearchClaimsPage
-                    claimIdSearchNbr={claimIdSearchNbr}
-                    policySearchNbr={policySearchNbr}
-                    lastName={lastName}
-                    setClaimIdSearchNbr={setClaimIdSearchNbr}
-                    setPolicySearchNbr={setPolicySearchNbr}
-                    setLastName={setLastName}
-                    />}
+                  roles={["USER", "MANAGER"]}
+                  element={
+                    <SearchClaimsPage
+                      claimIdSearchNbr={claimIdSearchNbr}
+                      policySearchNbr={policySearchNbr}
+                      lastName={lastName}
+                      setClaimIdSearchNbr={setClaimIdSearchNbr}
+                      setPolicySearchNbr={setPolicySearchNbr}
+                      setLastName={setLastName}
                     />
-                }
-              />
+                  }
+                />
+              }
+            />
             <Route
               path="/search/lastname/:lastNameSearchTerm"
               element={
                 <ProtectedRoute
-                roles={["USER", "MANAGER"]}
-              element={
-                  <SearchClaimsPage
-                    claimIdSearchNbr={claimIdSearchNbr}
-                    policySearchNbr={policySearchNbr}
-                    lastName={lastName}
-                    setClaimIdSearchNbr={setClaimIdSearchNbr}
-                    setPolicySearchNbr={setPolicySearchNbr}
-                    setLastName={setLastName}
-                    />}
+                  roles={["USER", "MANAGER"]}
+                  element={
+                    <SearchClaimsPage
+                      claimIdSearchNbr={claimIdSearchNbr}
+                      policySearchNbr={policySearchNbr}
+                      lastName={lastName}
+                      setClaimIdSearchNbr={setClaimIdSearchNbr}
+                      setPolicySearchNbr={setPolicySearchNbr}
+                      setLastName={setLastName}
                     />
-                }
-              />
+                  }
+                />
+              }
+            />
             <Route
               path="/open-claims"
               element={
                 <ProtectedRoute
-                roles={["USER", "MANAGER"]}
-              element={
-              <OpenClaimsTable />}
-              />}
+                  roles={["USER", "MANAGER"]}
+                  element={<OpenClaimsTable />}
+                />
+              }
             />
             <Route path="*" element={<ErrorPage />} />
           </Routes>

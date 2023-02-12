@@ -44,10 +44,10 @@ const TaskListItem = (props) => {
           <div className="col-3">
             <b>{props.task.taskDate}</b>
           </div>
-          <div className="col-5">{props.task.taskText}</div>
+          <div className="col-4">{props.task.taskText}</div>
           <div className="col-2">{statusString}</div>
           {!props.archived &&
-          <div className="col-2">
+          <div className="col-3">
             <button 
             className="btn btn-primary btn-sm" 
             onClick={updateTask}

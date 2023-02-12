@@ -33,7 +33,7 @@ const NewTaskForm = (props) => {
     const errors = validateData();
     if (Object.keys(errors).length) {
       setErrors(errors);
-      // there are errors, do not continue saving s
+      // there are errors, do not continue saving
       return;
     }
     setErrors("");
@@ -75,7 +75,7 @@ const NewTaskForm = (props) => {
           <label htmlFor="newTask" className="col-2 col-form-label mt-2">
             Add Task
           </label>
-          <div className="col-8">
+          <div className="col-7">
             <input
               type="text"
               className="form-control"
@@ -85,7 +85,7 @@ const NewTaskForm = (props) => {
               placeholder="Add new task"
             />
           </div>
-          <div className="col-2 mt-2">
+          <div className="col-3 mt-2">
             <button type="submit" className="btn btn-secondary" disabled={!touched}>
               Add
             </button>

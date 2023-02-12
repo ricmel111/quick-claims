@@ -95,7 +95,7 @@ const ClaimForm = (props) => {
   };
 
   useEffect((event) => {
-    if ((props.openTasks) && (changeStatusSelected)) {
+    if ((props.openTasks) && (changeStatusSelected === "C" || changeStatusSelected === "A")) {
       console.log("OpenTasks1", props.openTasks);
       if (props.openTasks.length > 0) {
         console.log("OpenTasks2", props.openTasks);

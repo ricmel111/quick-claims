@@ -94,7 +94,7 @@ const NewClaimForm = () => {
     incidentDescription: "",
     incidentDate: "",
     furtherDetails: "",
-    paymentAmount: "",
+    paymentAmount: 0,
   };
 
   const formReducer = (state, data) => {

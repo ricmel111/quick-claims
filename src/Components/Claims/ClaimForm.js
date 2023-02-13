@@ -237,7 +237,9 @@ const ClaimForm = (props) => {
               </div>
             )}
           {(props.claim.claimStatus === "A" ||
-            changeStatusSelected === "A") && (
+            changeStatusSelected === "A" || 
+            props.claim.claimStatus === "C" ||
+            changeStatusSelected === "C") && (
             <div className="form-group row">
               <label
                 htmlFor="paymentAmount"

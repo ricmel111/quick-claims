@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../Contexts/UserContexts";
 import { login } from "../Data/DataFunctions";
@@ -6,6 +7,9 @@ import { login } from "../Data/DataFunctions";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const usersInRedux = useSelector((state) => state.currentUser);
+  const timeOfLastFetch = useSelector((state) => state.lastFetch);
+  const dispatch = useDispatch();
 
   const currentUser = useContext(UserContext);
 
@@ -21,13 +25,35 @@ const Login = () => {
 
   const submitForm = (event) => {
     event.preventDefault();
-    login(username, password)
-      .then((result) => {
-        console.log(result);
-        currentUser.setUser({ name: result.data.username, role: result.data.role, password: password });
-        navigate("/");
-      })
-      .catch((error) => console.log("login didn't work"));
+    //do we have any users in redux?
+    if (
+      Object.keys(currentUser).length > 0 &&
+      new Date().getTime() - timeOfLastFetch < 60000
+    ) {
+      console.log("using users from redux");
+      currentUser.setUser(usersInRedux);
+    } else {
+      login(username, password)
+        .then((result) => {
+          console.log(result);
+          currentUser.setUser({
+            name: result.data.username,
+            role: result.data.role,
+            password: password,
+          });
+          dispatch({
+            type: "login",
+            value: {
+              name: result.data.username,
+              role: result.data.role,
+              password: password,
+            },
+          });
+          console.log("using users via rest", result.data.username);
+          navigate("/");
+        })
+        .catch((error) => console.log("login didn't work"));
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-import { render, act } from "@testing-library/react";
+import { render, act, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import OpenClaimsTable from "./OpenClaimsTable";
 import { Provider } from "react-redux";
@@ -22,15 +22,15 @@ jest.mock("../../Data/DataFunctions", () => {
             "",
             "Phil",
             "Foden",
-            new Date("2023-01-01"),
+            new Date().toISOString(),
             123.45,
             "Fire damage",
             "a long description",
-            new Date("2023-01-01"),
+            new Date().toISOString(),
             "further details here",
             null,
-            [2, "O", "this is task 1", new Date("2023-01-01")],
-            [2, "this is note 1", new Date("2023-01-01")]
+            [2, "O", "this is task 1", new Date().toISOString()],
+            [2, "this is note 1", new Date().toISOString()]
           ]
         });
       }
@@ -38,16 +38,18 @@ jest.mock("../../Data/DataFunctions", () => {
   });
 
   test("open claims table is displayed on page load", async () => {
-    // const { findByTestId } = render(
-    //   <BrowserRouter>
-    //     <Provider store={store}>
-    //       <OpenClaimsTable />
-    //     </Provider>
-    //   </BrowserRouter>
-    // );
-  
-    // await act(async () => {
-    //   const tableElement = await findByTestId("table");
-    //   expect(tableElement).toBeInTheDocument();
-    // });
+    const { findByTestId } = render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <OpenClaimsTable />
+        </Provider>
+      </BrowserRouter>
+    );
+
+
+    await act(async () => {
+    const openClaims = await screen.findByTestId("table");
+    expect(openClaims).toBeInTheDocument();
+  });
+
   });

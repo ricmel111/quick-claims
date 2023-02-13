@@ -52,14 +52,14 @@ const OpenClaimsTable = () => {
             </div>
           </div>
           <div className="row">
-            <div className="col-12 col-xl-10 offset-xl-1 card" id="claimForm">
+            <div className="col-12 col-xl-10 offset-xl-1 card" id="claimForm"  data-testid="table">
               <div className="card-body">
                 <div className="col-12 text-center">
                   {isLoading && (
                     <img src={loadingGif} alt="wait until the page loads" />
                   )}
                   {!isLoading && (
-                    <table className="table text-center align-middle" data-testid="table">
+                    <table className="table text-center align-middle">
                       <thead>
                         <tr>
                           <th scope="col">Claim Id</th>

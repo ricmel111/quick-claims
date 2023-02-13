@@ -20,8 +20,8 @@ const Task = (props) => {
           task={props.task}
           loadTaskList={props.loadTaskList}
         />
-      </div>
-      {(!props.archived ||
+      </div>{console.log("TEST", props.archived, props.accepted, props.claim.claimStatus )}
+      {(
         props.claim.claimStatus === "O" ||
         props.claim.claimStatus === "P") && (
         <div className="card-footer">

@@ -156,7 +156,7 @@ const NewClaimForm = () => {
     }
 
     if (event.target.id === "manufactureYear") {
-      if (event.target.value.trim().length > 2) {
+      if (event.target.value.trim().length > 0) {
         setManufactureYearValid(true);
       } else {
         setManufactureYearValid(false);

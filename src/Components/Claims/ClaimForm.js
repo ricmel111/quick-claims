@@ -209,7 +209,7 @@ const ClaimForm = (props) => {
                 <option value="R">Rejected</option>
                 <option value="P">Assessed - In Progress</option>
                 <option value="A">Accepted - Awaiting Payment</option>
-                {props.claim.claimStatus === "A" && (
+                {props.accepted && (
                   <option value="C">Accepted - Paid</option>
                 )}
               </select>

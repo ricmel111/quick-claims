@@ -13,6 +13,7 @@ import Task from "../Tasks/Task";
 const ClaimPage = () => {
   const params = useParams();
   const [archived, setArchived] = useState();
+  const [accepted, setAccepted] = useState();
   const [claim, setClaim] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const currentUser = useContext(UserContext);
@@ -87,6 +88,11 @@ const ClaimPage = () => {
     } else {
       setArchived(false);
     }
+    if (claim.claimStatus === "C" || claim.claimStatus === "A") {
+      setAccepted(true);
+    } else {
+      setAccepted(false);
+    }
   };
 
   const loadNotes = () => {
@@ -128,6 +134,7 @@ const ClaimPage = () => {
                   <ClaimForm
                     claim={claim}
                     archived={archived}
+                    accepted={accepted}
                     isLoading={isLoading}
                     loadClaim={loadClaim}
                     loadNotes={loadNotes}
@@ -147,6 +154,7 @@ const ClaimPage = () => {
                 claim={claim}
                 task={task}
                 archived={archived}
+                accepted={accepted}
                 loadTaskList={loadTaskList}
                 isLoading={isLoading}
                 openTasks={openTasks}
